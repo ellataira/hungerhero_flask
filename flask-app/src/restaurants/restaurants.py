@@ -2,12 +2,27 @@ from flask import Blueprint, request, jsonify, make_response
 import json
 from src import db
 
+# RENAME TO DRIVERS
 
-products = Blueprint('products', __name__)
+# DELETE will be firing a driver
+
+# POST will be new driver joining the app joining app
+
+# PUT when driver changes desired radius
+# PUT for driver to change current location
+# PUT for updating jobs completed and amount earned
+
+# GET to find top 10 highest rated drivers
+# GET to find bottom 20 rated drivers
+# GET to find 5 highest earning drivers
+
+
+
+restaurants = Blueprint('restaurants', __name__)
 
 # Get all the products from the database
-@products.route('/products', methods=['GET'])
-def get_products():
+@restaurants.route('/restaurants', methods=['GET'])
+def get_restaurants():
     # get a cursor object from the database
     cursor = db.get_db().cursor()
 
@@ -32,7 +47,7 @@ def get_products():
     return jsonify(json_data)
 
 # get the top 5 products from the database
-@products.route('/mostExpensive')
+@restaurants.route('/mostExpensive')
 def get_most_pop_products():
     cursor = db.get_db().cursor()
     query = '''
