@@ -2,6 +2,22 @@ from flask import Blueprint, request, jsonify, make_response
 import json
 from src import db
 
+# DELETE will get rid of an account
+
+# POST will be creating an account
+
+# PUT will be changing payment method
+# PUT can also be updating orders placed
+# PUT can also change total amount spent
+
+# GET top 10 highest spending customers
+# GET top 10 customers with most orders place
+# GET top 3 highest rated customers
+# GET top 3 lowest rated customers
+
+
+
+
 users = Blueprint('users', __name__)
 
 # Get all customers from the DB
