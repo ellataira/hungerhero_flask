@@ -2,6 +2,22 @@ from flask import Blueprint, request, jsonify, make_response
 import json
 from src import db
 
+# RENAME TO DRIVERS
+
+# DELETE will be firing a driver
+
+# POST will be new driver joining the app joining app
+
+# PUT when driver changes desired radius
+# PUT for driver to change current location
+# PUT for updating jobs completed and amount earned
+
+# GET to find top 10 highest rated drivers
+# GET to find bottom 20 rated drivers
+# GET to find 5 highest earning drivers
+
+
+
 restaurants = Blueprint('restaurants', __name__)
 
 # Get all the products from the database
