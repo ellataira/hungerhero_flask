@@ -27,7 +27,8 @@ create table PaymentMethod (
     cvv int not null ,
     expiration varchar(20) not null ,
     primary key (card_number, cvv, expiration),
-    foreign key (username) references Users (username)
+    foreign key (username) references Users (username),
+    foreign key (card_number) references Users(card_number)
 );
 
 CREATE TABLE Driver
