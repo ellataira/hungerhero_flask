@@ -112,6 +112,16 @@ create table MenuItem(
 );
 
 
+create table OrderedItem(
+    item_name varchar(50),
+    orderID varchar(50),
+    primary key (item_name, orderID),
+    foreign key (item_name) references MenuItem(name),
+    foreign key (orderID) references Orders(orderid)
+);
+
+
+
 insert into Users values (7086388402, "English", "Ella", "Taira", 1, "ellataira",
                           30.50, "she/her", 39239199393, "144 Hemenway", 00000, "Boston", "MA", "USA" ),
                       (3145669906, "English", "Ben", "Weiss", 1, "bweiss",
