@@ -1,6 +1,9 @@
-drop database hungerhero;
+# drop database hungerhero;
 
 create database hungerhero ;
+
+grant all privileges on hungerhero.* to 'webapp'@'%';
+flush privileges;
 
 use hungerhero;
 
@@ -133,6 +136,8 @@ create table OrderedItem(
     foreign key (orderID) references Orders(orderid)
                         on update cascade on delete cascade
 );
+
+
 
 #
 #

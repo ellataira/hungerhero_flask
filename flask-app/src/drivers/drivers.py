@@ -18,15 +18,19 @@ drivers = Blueprint('drivers', __name__)
 
 # Removes a driver from the database drivers
 @drivers.route('/fireDriver', methods=['DELETE'])
-def remove_driver(employee_id):
+def remove_driver():
     # get a cursor object from the database
     cursor = db.get_db().cursor()
+
+    data = request.json 
+
+    employee_id = data['employeeid']
 
     # this might not be right
     query = '''
         DELETE FROM Driver
-        WHERE employeeid = employee_id
-    '''
+        WHERE employeeid = {}
+    '''.format(employee_id)
 
     # use cursor to query the database for a list of products
     cursor.execute(query)
@@ -50,14 +54,19 @@ def remove_driver(employee_id):
 
 # Adds a driver to the database of drivers
 @drivers.route('/hireDriver', methods=['POST'])
-def hire_driver(employeeid, phone_number, radius, drivers_license,
-current_location, transportation):
+def hire_driver():
     # get a cursor object from the database
     cursor = db.get_db().cursor()
 
+    data = request.json
+
+    employeeid, phone_number, radius, drivers_license, current_location, transportation = data['employeeid'], data['phone_number'], data['radius'], data['drivers_license'], data['current_location'], data['transportation']
+
     # use cursor to query the database for a list of products
-    cursor.execute("INSERT INTO Driver VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
-    (employeeid, phone_number, radius, drivers_license, 0, current_location, 0, transportation, 0))
+    # cursor.execute("INSERT INTO Driver VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+    # (employeeid, phone_number, radius, drivers_license, "0", current_location, "0", transportation, "0"))
+
+    cursor.execute("INSERT INTO Driver (employeeid, phone_number, radius, drivers_license, current_location, jobs_completed, transportation, total_earned, rating) VALUES ({}, {},{},{},{},{},{},{},{})".format(employeeid, phone_number, radius, drivers_license, "0", current_location, "0", transportation, "0"))
 
     # grab the column headers from the returned data
     column_headers = [x[0] for x in cursor.description]
@@ -164,34 +173,6 @@ def new_order_completed(employee_id):
     cursor.execute(query)
 
     # grab the column headers from the returned data
-    column_headers = [x[0] for x in cursor.description]
-
-    # create an empty dictionary object to use in 
-    # putting column headers together with data
-    json_data = []
-
-    # fetch all the data from the cursor
-    theData = cursor.fetchall()
-
-    # for each of the rows, zip the data elements together with
-    # the column headers. 
-    for row in theData:
-        json_data.append(dict(zip(column_headers, row)))
-
-    return jsonify(json_data)
-
-# get the top 5 products from the database
-@drivers.route('/mostExpensive')
-def get_most_expensive_products():
-    cursor = db.get_db().cursor()
-    query = '''
-        SELECT product_code, product_name, list_price, reorder_level
-        FROM products
-        ORDER BY list_price DESC
-        LIMIT 5
-    '''
-    cursor.execute(query)
-       # grab the column headers from the returned data
     column_headers = [x[0] for x in cursor.description]
 
     # create an empty dictionary object to use in 

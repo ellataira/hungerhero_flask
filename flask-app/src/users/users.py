@@ -20,11 +20,11 @@ from src import db
 users = Blueprint('users', __name__)
 
 # Get all customers from the DB
-@users.route('u/users', methods=['GET'])
-def get_uers():
+@users.route('/users', methods=['GET'])
+def get_users():
     cursor = db.get_db().cursor()
-    cursor.execute('phone, language,\
-        first_name, last_name, total_orders, username, total_spent, pronouns, card_number, address_street,\
+    cursor.execute('select phone, language,\
+        first_name, last_name, total_orders, username, total_spent, pronouns, address_street,\
                    address_zip, address_city, address_state, address_country from Users')
     # grab the column headers from the returned data
     column_headers = [x[0] for x in cursor.description]
@@ -197,6 +197,10 @@ def create_new_user(phone, lang, fname, lname, total_orders, username, total_spe
 def change_payment(cardno, oldcvv, oldexp, newcvv, newexp):
     cursor = db.get_db().cursor()
 
+    data = request.json 
+
+    cardno, oldcvv, oldexp, newcvv, newexp  = data["cardno"], data["oldcvv"], data["oldexp"], data["newcvv"], data["newexp"]
+
     query = '''update PaymentMethod 
                 set cvv = {}, expiration = {} 
                 where cvv = {} and expiration = {} and card_number = {};'''.format(newcvv, newexp, oldcvv, oldexp, cardno)
@@ -215,14 +219,18 @@ def change_payment(cardno, oldcvv, oldexp, newcvv, newexp):
 
 
 # updates a User's address 
-@users.route('u/address', methods=['PUT'])
-def update_address(street, zipcode, city, state, country, username):
+@users.route('/address', methods=['PUT'])
+def update_address():
     cursor = db.get_db().cursor()
+
+    data = request.json 
+
+    street, zipcode, city, state, country, username = data["street"], data["zipcode"], data["city"], data["state"], data["country"], data["username"]
 
     query = '''
     update Users
-    set address_street = {}, address_zip={} , address_city = {} , address_state = {} , address_country = {}
-    where username = {}
+    set address_street={}, address_zip={} , address_city={} , address_state={} , address_country={}
+    where username={}
     '''.format(street, zipcode, city, state, country, username)
 
     cursor.execute(query)
