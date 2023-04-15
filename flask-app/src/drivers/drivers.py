@@ -7,7 +7,7 @@ from src import db
 # -- POST will be new driver joining the app joining app  done potentially
 
 # -- PUT when driver changes desired radius maybe done
-# PUT for driver to change current location
+# -- PUT for driver to change current location  maybe done
 # PUT for updating jobs completed and amount earned
 
 # -- GET to find top 10 highest rated drivers done
@@ -117,6 +117,46 @@ def update_location(new_location, employee_id):
     #maybe?
     query = '''
         UPDATE Driver SET current_location = new_location
+
+        WHERE employeeid = employee_id
+    '''
+
+    # use cursor to query the database for a list of products
+    cursor.execute(query)
+
+    # grab the column headers from the returned data
+    column_headers = [x[0] for x in cursor.description]
+
+    # create an empty dictionary object to use in 
+    # putting column headers together with data
+    json_data = []
+
+    # fetch all the data from the cursor
+    theData = cursor.fetchall()
+
+    # for each of the rows, zip the data elements together with
+    # the column headers. 
+    for row in theData:
+        json_data.append(dict(zip(column_headers, row)))
+
+    return jsonify(json_data)
+
+# Adds a completed delivery to a driver and updates amount earned
+@drivers.route('/drivers/newOrderCompleted', methods=['PUT'])
+def new_order_completed(employee_id):
+    # get a cursor object from the database
+    cursor = db.get_db().cursor()
+
+    updated_earned = '''
+        SELECT SUM(total_amount)
+        FROM Orders
+        WHERE driver = employee_id
+    '''
+
+    #maybe?
+    query = '''
+        UPDATE Driver SET total_earned = updated_earned,
+        jobs_completed = jobs_completed + 1
         WHERE employeeid = employee_id
     '''
 
