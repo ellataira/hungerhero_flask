@@ -133,29 +133,7 @@ def update_pronouns(new_pronouns):
 
     return jsonify(json_data)
 
-# Get customer detail for customer with particular userID
-@users.route('/users/<userID>', methods=['GET'])
-def get_customer(userID):
-    cursor = db.get_db().cursor()
-    cursor.execute(query)
-       # grab the column headers from the returned data
-    column_headers = [x[0] for x in cursor.description]
 
-    # create an empty dictionary object to use in 
-    # putting column headers together with data
-    json_data = []
-
-    # fetch all the data from the cursor
-    theData = cursor.fetchall()
-
-    # for each of the rows, zip the data elements together with
-    # the column headers. 
-    for row in theData:
-        json_data.append(dict(zip(row_headers, row)))
-    the_response = make_response(jsonify(json_data))
-    the_response.status_code = 200
-    the_response.mimetype = 'application/json'
-    return the_response
 
 
 # deletes a given user from Users
