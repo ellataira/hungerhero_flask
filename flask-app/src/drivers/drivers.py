@@ -2,8 +2,6 @@ from flask import Blueprint, request, jsonify, make_response
 import json
 from src import db
 
-# RENAME TO DRIVERS
-
 # DELETE will be firing a driver
 
 # POST will be new driver joining the app joining app
@@ -12,17 +10,15 @@ from src import db
 # PUT for driver to change current location
 # PUT for updating jobs completed and amount earned
 
-# GET to find top 10 highest rated drivers
-# GET to find bottom 20 rated drivers
-# GET to find 5 highest earning drivers
+# -- GET to find top 10 highest rated drivers done
+# -- GET to find bottom 20 rated drivers done
+# -- GET to find 5 highest earning drivers done
 
+drivers = Blueprint('drivers', __name__)
 
-
-restaurants = Blueprint('restaurants', __name__)
-
-# Get all the products from the database
-@restaurants.route('/restaurants', methods=['GET'])
-def get_restaurants():
+# Removes a driver from the database drivers
+@drivers.route('/fireDriver', methods=['DELETE'])
+def get_drivers():
     # get a cursor object from the database
     cursor = db.get_db().cursor()
 
@@ -47,13 +43,97 @@ def get_restaurants():
     return jsonify(json_data)
 
 # get the top 5 products from the database
-@restaurants.route('/mostExpensive')
+@drivers.route('/mostExpensive')
 def get_most_pop_products():
     cursor = db.get_db().cursor()
     query = '''
         SELECT product_code, product_name, list_price, reorder_level
         FROM products
         ORDER BY list_price DESC
+        LIMIT 5
+    '''
+    cursor.execute(query)
+       # grab the column headers from the returned data
+    column_headers = [x[0] for x in cursor.description]
+
+    # create an empty dictionary object to use in 
+    # putting column headers together with data
+    json_data = []
+
+    # fetch all the data from the cursor
+    theData = cursor.fetchall()
+
+    # for each of the rows, zip the data elements together with
+    # the column headers. 
+    for row in theData:
+        json_data.append(dict(zip(column_headers, row)))
+
+    return jsonify(json_data)
+
+# Get top 20 worst rated drivers
+@drivers.route('/drivers/worstDrivers', methods=['GET'])
+def get_lowest():
+    cursor = db.get_db().cursor()
+    query = '''
+        SELECT employeeid
+        FROM Driver
+        ORDER BY rating
+        LIMIT 20
+    '''
+    cursor.execute(query)
+       # grab the column headers from the returned data
+    column_headers = [x[0] for x in cursor.description]
+
+    # create an empty dictionary object to use in 
+    # putting column headers together with data
+    json_data = []
+
+    # fetch all the data from the cursor
+    theData = cursor.fetchall()
+
+    # for each of the rows, zip the data elements together with
+    # the column headers. 
+    for row in theData:
+        json_data.append(dict(zip(column_headers, row)))
+
+    return jsonify(json_data)
+
+# Get 10 highest rated drivers
+@drivers.route('/drivers/mostEarned', methods=['GET'])
+def get_most_earned():
+    cursor = db.get_db().cursor()
+    query = '''
+        SELECT employeeid
+        FROM Driver
+        ORDER BY rating DESC
+        LIMIT 10
+    '''
+    cursor.execute(query)
+       # grab the column headers from the returned data
+    column_headers = [x[0] for x in cursor.description]
+
+    # create an empty dictionary object to use in 
+    # putting column headers together with data
+    json_data = []
+
+    # fetch all the data from the cursor
+    theData = cursor.fetchall()
+
+    # for each of the rows, zip the data elements together with
+    # the column headers. 
+    for row in theData:
+        json_data.append(dict(zip(column_headers, row)))
+
+    return jsonify(json_data)
+
+# get 5 highest earning drivers
+@drivers.route('/drivers/mostEarned', methods=['GET'])
+def get_most_earned():
+    cursor = db.get_db().cursor()
+    query = '''
+        SELECT employeeid
+        FROM Driver
+        ORDER BY total_earned DESC
         LIMIT 5
     '''
     cursor.execute(query)
