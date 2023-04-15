@@ -109,6 +109,11 @@ def update_pronouns(new_pronouns):
     query = '''
         UPDATE USER SET pronouns = new_pronouns
     '''
+
+    data = request.json
+
+    new_pronouns = data['Pronouns']
+    
     cursor = db.get_db().cursor()
     cursor.execute(query)
        # grab the column headers from the returned data
