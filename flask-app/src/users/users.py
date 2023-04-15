@@ -21,32 +21,26 @@ users = Blueprint('users', __name__)
 @users.route('/users', methods=['GET'])
 def get_uers():
     cursor = db.get_db().cursor()
-    cursor.execute('select company, last_name,\
-        first_name, job_title, business_phone from customers')
-    row_headers = [x[0] for x in cursor.description]
-    json_data = []
-    theData = cursor.fetchall()
-    for row in theData:
-        json_data.append(dict(zip(row_headers, row)))
-    the_response = make_response(jsonify(json_data))
-    the_response.status_code = 200
-    the_response.mimetype = 'application/json'
-    return the_response
+    cursor.execute('phone, language,\
+        first_name, last_name, total_orders, username, total_spent, pronouns, card_number, address_street,\
+                   address_zip, address_city, address_state, address_country from Users')
+    # grab the column headers from the returned data
+    column_headers = [x[0] for x in cursor.description]
 
-# Get customer detail for customer with particular userID
-@users.route('/users/<userID>', methods=['GET'])
-def get_customer(userID):
-    cursor = db.get_db().cursor()
-    cursor.execute('select * from users where id = {0}'.format(userID))
-    row_headers = [x[0] for x in cursor.description]
+    # create an empty dictionary object to use in 
+    # putting column headers together with data
     json_data = []
+
+    # fetch all the data from the cursor
     theData = cursor.fetchall()
+
+    # for each of the rows, zip the data elements together with
+    # the column headers. 
     for row in theData:
-        json_data.append(dict(zip(row_headers, row)))
-    the_response = make_response(jsonify(json_data))
-    the_response.status_code = 200
-    the_response.mimetype = 'application/json'
-    return the_response
+        json_data.append(dict(zip(column_headers, row)))
+
+    return jsonify(json_data)
+
 
 # Gets the top 10 highest spending customers 
 
@@ -108,10 +102,35 @@ def get_top_10_orders_placed():
 
 # PUT will update the pronouns 
 
-@users.route('/users/{pronouns}', method=['PUT'])
+@users.route('/users/pronouns', method=['PUT'])
 def update_pronouns(new_pronouns):
     query = '''
         UPDATE USER SET pronouns = new_pronouns
+    '''
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+       # grab the column headers from the returned data
+    column_headers = [x[0] for x in cursor.description]
+
+    # create an empty dictionary object to use in 
+    # putting column headers together with data
+    json_data = []
+
+    # fetch all the data from the cursor
+    theData = cursor.fetchall()
+
+    # for each of the rows, zip the data elements together with
+    # the column headers. 
+    for row in theData:
+        json_data.append(dict(zip(column_headers, row)))
+
+    return jsonify(json_data)
+
+# PUT can also change total amount spent
+@users.route('/users/total_amount', method=['PUT'])
+def update_pronouns(new_total_spent):
+    query = '''
+        UPDATE Users SET total_spent = new_total_spent
     '''
     cursor = db.get_db().cursor()
     cursor.execute(query)
