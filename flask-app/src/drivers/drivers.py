@@ -2,12 +2,12 @@ from flask import Blueprint, request, jsonify, make_response
 import json
 from src import db
 
-# DELETE will be firing a driver
+# -- DELETE will be firing a driver  done potentially
 
-# POST will be new driver joining the app joining app
+# -- POST will be new driver joining the app joining app  done potentially
 
-# PUT when driver changes desired radius
-# PUT for driver to change current location
+# -- PUT when driver changes desired radius maybe done
+# -- PUT for driver to change current location  maybe done
 # PUT for updating jobs completed and amount earned
 
 # -- GET to find top 10 highest rated drivers done
@@ -17,13 +17,151 @@ from src import db
 drivers = Blueprint('drivers', __name__)
 
 # Removes a driver from the database drivers
-@drivers.route('/fireDriver', methods=['DELETE'])
-def get_drivers():
+@drivers.route('/drivers/fireDriver', methods=['DELETE'])
+def remove_driver():
+    # get a cursor object from the database
+    cursor = db.get_db().cursor()
+
+    # this might not be right
+    query = '''
+        DELETE FROM Driver
+        WHERE employeeid = employeeid
+    '''
+
+    # use cursor to query the database for a list of products
+    cursor.execute(query)
+
+    # grab the column headers from the returned data
+    column_headers = [x[0] for x in cursor.description]
+
+    # create an empty dictionary object to use in 
+    # putting column headers together with data
+    json_data = []
+
+    # fetch all the data from the cursor
+    theData = cursor.fetchall()
+
+    # for each of the rows, zip the data elements together with
+    # the column headers. 
+    for row in theData:
+        json_data.append(dict(zip(column_headers, row)))
+
+    return jsonify(json_data)
+
+# Adds a driver to the database of drivers
+@drivers.route('/drivers/hireDriver', methods=['POST'])
+def hire_driver(employeeid, phone_number, radius, drivers_license,
+current_location, transportation):
     # get a cursor object from the database
     cursor = db.get_db().cursor()
 
     # use cursor to query the database for a list of products
-    cursor.execute('SELECT id, product_code, product_name, list_price FROM products')
+    cursor.execute("INSERT INTO Driver VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+    (employeeid, phone_number, radius, drivers_license, 0, current_location, 0, transportation, 0))
+
+    # grab the column headers from the returned data
+    column_headers = [x[0] for x in cursor.description]
+
+    # create an empty dictionary object to use in 
+    # putting column headers together with data
+    json_data = []
+
+    # fetch all the data from the cursor
+    theData = cursor.fetchall()
+
+    # for each of the rows, zip the data elements together with
+    # the column headers. 
+    for row in theData:
+        json_data.append(dict(zip(column_headers, row)))
+
+    return jsonify(json_data)
+
+# Allows a driver to update their desired working radius
+@drivers.route('/drivers/updateRadius', methods=['PUT'])
+def update_radius(new_radius, employee_id):
+    # get a cursor object from the database
+    cursor = db.get_db().cursor()
+
+    #maybe?
+    query = '''
+        UPDATE Driver SET radius = new_radius
+        WHERE employeeid = employee_id
+    '''
+
+    # use cursor to query the database for a list of products
+    cursor.execute(query)
+
+    # grab the column headers from the returned data
+    column_headers = [x[0] for x in cursor.description]
+
+    # create an empty dictionary object to use in 
+    # putting column headers together with data
+    json_data = []
+
+    # fetch all the data from the cursor
+    theData = cursor.fetchall()
+
+    # for each of the rows, zip the data elements together with
+    # the column headers. 
+    for row in theData:
+        json_data.append(dict(zip(column_headers, row)))
+
+    return jsonify(json_data)
+
+# Allows a driver to update their current location
+@drivers.route('/drivers/updateLocation', methods=['PUT'])
+def update_location(new_location, employee_id):
+    # get a cursor object from the database
+    cursor = db.get_db().cursor()
+
+    #maybe?
+    query = '''
+        UPDATE Driver SET current_location = new_location
+
+        WHERE employeeid = employee_id
+    '''
+
+    # use cursor to query the database for a list of products
+    cursor.execute(query)
+
+    # grab the column headers from the returned data
+    column_headers = [x[0] for x in cursor.description]
+
+    # create an empty dictionary object to use in 
+    # putting column headers together with data
+    json_data = []
+
+    # fetch all the data from the cursor
+    theData = cursor.fetchall()
+
+    # for each of the rows, zip the data elements together with
+    # the column headers. 
+    for row in theData:
+        json_data.append(dict(zip(column_headers, row)))
+
+    return jsonify(json_data)
+
+# Adds a completed delivery to a driver and updates amount earned
+@drivers.route('/drivers/newOrderCompleted', methods=['PUT'])
+def new_order_completed(employee_id):
+    # get a cursor object from the database
+    cursor = db.get_db().cursor()
+
+    updated_earned = '''
+        SELECT SUM(total_amount)
+        FROM Orders
+        WHERE driver = employee_id
+    '''
+
+    #maybe?
+    query = '''
+        UPDATE Driver SET total_earned = updated_earned,
+        jobs_completed = jobs_completed + 1
+        WHERE employeeid = employee_id
+    '''
+
+    # use cursor to query the database for a list of products
+    cursor.execute(query)
 
     # grab the column headers from the returned data
     column_headers = [x[0] for x in cursor.description]
