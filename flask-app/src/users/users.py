@@ -46,7 +46,7 @@ def get_uers():
 
 # Gets the top 10 highest spending customers 
 
-@users.route('/mostSpentCustomer', method=['GET'])
+@users.route('/mostSpentCustomer', methods=['GET'])
 def get_top_10_spending_customer():
     query = '''
         SELECT totaL_spent, first_name, last_name
@@ -74,7 +74,7 @@ def get_top_10_spending_customer():
     return jsonify(json_data)
 
 # GET top 10 customers with most orders place
-@users.route('/mostOrdersPlaced', method=['GET'])
+@users.route('/mostOrdersPlaced', methods=['GET'])
 def get_top_10_orders_placed():
     query = '''
         SELECT total_orders, first_name, last_name
@@ -104,7 +104,7 @@ def get_top_10_orders_placed():
 
 # PUT will update the pronouns 
 
-@users.route('/users/pronouns', method=['PUT'])
+@users.route('/users/pronouns', methods=['PUT'])
 def update_pronouns(new_pronouns):
     query = '''
         UPDATE USER SET pronouns = new_pronouns
