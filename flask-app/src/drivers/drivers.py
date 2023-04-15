@@ -17,15 +17,15 @@ from src import db
 drivers = Blueprint('drivers', __name__)
 
 # Removes a driver from the database drivers
-@drivers.route('/drivers/fireDriver', methods=['DELETE'])
-def remove_driver():
+@drivers.route('/fireDriver', methods=['DELETE'])
+def remove_driver(employee_id):
     # get a cursor object from the database
     cursor = db.get_db().cursor()
 
     # this might not be right
     query = '''
         DELETE FROM Driver
-        WHERE employeeid = employeeid
+        WHERE employeeid = employee_id
     '''
 
     # use cursor to query the database for a list of products
@@ -49,7 +49,7 @@ def remove_driver():
     return jsonify(json_data)
 
 # Adds a driver to the database of drivers
-@drivers.route('/drivers/hireDriver', methods=['POST'])
+@drivers.route('/hireDriver', methods=['POST'])
 def hire_driver(employeeid, phone_number, radius, drivers_license,
 current_location, transportation):
     # get a cursor object from the database
@@ -77,7 +77,7 @@ current_location, transportation):
     return jsonify(json_data)
 
 # Allows a driver to update their desired working radius
-@drivers.route('/drivers/updateRadius', methods=['PUT'])
+@drivers.route('/updateRadius', methods=['PUT'])
 def update_radius(new_radius, employee_id):
     # get a cursor object from the database
     cursor = db.get_db().cursor()
@@ -109,7 +109,7 @@ def update_radius(new_radius, employee_id):
     return jsonify(json_data)
 
 # Allows a driver to update their current location
-@drivers.route('/drivers/updateLocation', methods=['PUT'])
+@drivers.route('/updateLocation', methods=['PUT'])
 def update_location(new_location, employee_id):
     # get a cursor object from the database
     cursor = db.get_db().cursor()
@@ -142,7 +142,7 @@ def update_location(new_location, employee_id):
     return jsonify(json_data)
 
 # Adds a completed delivery to a driver and updates amount earned
-@drivers.route('/drivers/newOrderCompleted', methods=['PUT'])
+@drivers.route('/newOrderCompleted', methods=['PUT'])
 def new_order_completed(employee_id):
     # get a cursor object from the database
     cursor = db.get_db().cursor()
@@ -182,7 +182,7 @@ def new_order_completed(employee_id):
 
 # get the top 5 products from the database
 @drivers.route('/mostExpensive')
-def get_most_pop_products():
+def get_most_expensive_products():
     cursor = db.get_db().cursor()
     query = '''
         SELECT product_code, product_name, list_price, reorder_level
@@ -209,7 +209,7 @@ def get_most_pop_products():
     return jsonify(json_data)
 
 # Get top 20 worst rated drivers
-@drivers.route('/drivers/worstDrivers', methods=['GET'])
+@drivers.route('/worstDrivers', methods=['GET'])
 def get_lowest():
     cursor = db.get_db().cursor()
     query = '''
@@ -237,8 +237,8 @@ def get_lowest():
     return jsonify(json_data)
 
 # Get 10 highest rated drivers
-@drivers.route('/drivers/mostEarned', methods=['GET'])
-def get_most_earned():
+@drivers.route('/highestRated', methods=['GET'])
+def get_highest_rated():
     cursor = db.get_db().cursor()
     query = '''
         SELECT employeeid
@@ -265,7 +265,7 @@ def get_most_earned():
     return jsonify(json_data)
 
 # get 5 highest earning drivers
-@drivers.route('/drivers/mostEarned', methods=['GET'])
+@drivers.route('/mostEarned', methods=['GET'])
 def get_most_earned():
     cursor = db.get_db().cursor()
     query = '''
