@@ -17,13 +17,19 @@ from src import db
 drivers = Blueprint('drivers', __name__)
 
 # Removes a driver from the database drivers
-@drivers.route('/fireDriver', methods=['DELETE'])
+@drivers.route('/drivers/fireDriver', methods=['DELETE'])
 def get_drivers():
     # get a cursor object from the database
     cursor = db.get_db().cursor()
 
+    # this might not be right
+    query = '''
+        DELETE FROM Driver
+        WHERE employeeid = employeeid
+    '''
+
     # use cursor to query the database for a list of products
-    cursor.execute('SELECT id, product_code, product_name, list_price FROM products')
+    cursor.execute(query)
 
     # grab the column headers from the returned data
     column_headers = [x[0] for x in cursor.description]
