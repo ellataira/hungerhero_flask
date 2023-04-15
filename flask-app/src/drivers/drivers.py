@@ -6,7 +6,7 @@ from src import db
 
 # -- POST will be new driver joining the app joining app  done potentially
 
-# PUT when driver changes desired radius
+# -- PUT when driver changes desired radius maybe done
 # PUT for driver to change current location
 # PUT for updating jobs completed and amount earned
 
@@ -78,15 +78,48 @@ current_location, transportation):
 
 # Allows a driver to update their desired working radius
 @drivers.route('/drivers/updateRadius', methods=['PUT'])
-def update_radius(new_radius):
+def update_radius(new_radius, employee_id):
     # get a cursor object from the database
     cursor = db.get_db().cursor()
 
     #maybe?
     query = '''
         UPDATE Driver SET radius = new_radius
+        WHERE employeeid = employee_id
     '''
-    
+
+    # use cursor to query the database for a list of products
+    cursor.execute(query)
+
+    # grab the column headers from the returned data
+    column_headers = [x[0] for x in cursor.description]
+
+    # create an empty dictionary object to use in 
+    # putting column headers together with data
+    json_data = []
+
+    # fetch all the data from the cursor
+    theData = cursor.fetchall()
+
+    # for each of the rows, zip the data elements together with
+    # the column headers. 
+    for row in theData:
+        json_data.append(dict(zip(column_headers, row)))
+
+    return jsonify(json_data)
+
+# Allows a driver to update their current location
+@drivers.route('/drivers/updateLocation', methods=['PUT'])
+def update_location(new_location, employee_id):
+    # get a cursor object from the database
+    cursor = db.get_db().cursor()
+
+    #maybe?
+    query = '''
+        UPDATE Driver SET current_location = new_location
+        WHERE employeeid = employee_id
+    '''
+
     # use cursor to query the database for a list of products
     cursor.execute(query)
 
