@@ -16,8 +16,6 @@ from src import db
 # GET top 3 lowest rated customers
 
 
-
-
 users = Blueprint('users', __name__)
 
 # Get all customers from the DB
@@ -50,3 +48,58 @@ def get_customer(userID):
     the_response.status_code = 200
     the_response.mimetype = 'application/json'
     return the_response
+
+# Gets the top 10 highest spending customers 
+
+@users.route('/mostSpentCustomer', method=['GET'])
+def get_top_10_spending_customer():
+    query = '''
+        SELECT totaL_spent, first_name, last_name
+        FROM Users
+        ORDER BY total_spent DESC
+        LIMIT 10
+    '''
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+       # grab the column headers from the returned data
+    column_headers = [x[0] for x in cursor.description]
+
+    # create an empty dictionary object to use in 
+    # putting column headers together with data
+    json_data = []
+
+    # fetch all the data from the cursor
+    theData = cursor.fetchall()
+
+    # for each of the rows, zip the data elements together with
+    # the column headers. 
+    for row in theData:
+        json_data.append(dict(zip(column_headers, row)))
+
+    return jsonify(json_data)
+
+# GET top 10 customers with most orders place
+@users.route('/mostOrdersPlaced', method=['GET'])
+def get_top_10_orders_placed():
+    query = '''
+        SELECT total_orders, first_name, last_name
+        FROM Users
+        ORDER BY total_orders DESC
+        LIMIT 10
+    '''
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+       # grab the column headers from the returned data
+    column_headers = [x[0] for x in cursor.description]
+
+    # create an empty dictionary object to use in 
+    # putting column headers together with data
+    json_data = []
+
+    # fetch all the data from the cursor
+    theData = cursor.fetchall()
+
+    # for each of the rows, zip the data elements together with
+    # the column headers. 
+    for row in theData:
+        json_data.append(dict(zip(column_headers, row)))
