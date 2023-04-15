@@ -27,6 +27,8 @@ create table PaymentMethod (
     card_number varchar(100) not null,
     primary key (card_number, cvv, expiration),
     foreign key (username) references Users(username)
+        on update cascade
+        on delete cascade
 );
 
 CREATE TABLE Driver
@@ -57,6 +59,8 @@ CREATE TABLE Orders
     time_placed            datetime     default current_timestamp,
     restaurant_name        varchar(50)  NOT NULL,
     CONSTRAINT fk_1 FOREIGN KEY (driver) REFERENCES Driver (employeeid)
+        on delete cascade
+        on update cascade
 );
 
 
@@ -77,8 +81,10 @@ create table DriverRating(
     restaurant varchar(50),
     rating float not null ,
     review text,
-    foreign key (driver_id) references Driver (employeeid),
-    foreign key (restaurant) references Restaurant (name),
+    foreign key (driver_id) references Driver (employeeid)
+                         on update cascade on delete cascade ,
+    foreign key (restaurant) references Restaurant (name)
+                         on update cascade on delete cascade ,
     primary key (driver_id, rating)
 );
 
@@ -87,8 +93,10 @@ create table UserRating(
     restaurant varchar(50),
     rating float not null ,
     review text,
-    foreign key (username) references Users (username),
-    foreign key (restaurant) references Restaurant (name),
+    foreign key (username) references Users (username)
+                       on update cascade on delete cascade ,
+    foreign key (restaurant) references Restaurant (name)
+                       on update cascade on delete cascade ,
     primary key (username, rating)
 );
 
@@ -99,6 +107,7 @@ create table Menu
     promotions text,
     primary key (menuID, name),
     foreign key (name) references Restaurant (name)
+        on update cascade on delete cascade
 );
 
 
@@ -107,6 +116,7 @@ create table MenuItem(
     menuID varchar(500),
     name varchar(50) primary key ,
     foreign key (menuID) references Menu (menuID)
+                     on update cascade on delete cascade
 );
 
 
@@ -114,8 +124,10 @@ create table OrderedItem(
     item_name varchar(50),
     orderID varchar(50),
     primary key (item_name, orderID),
-    foreign key (item_name) references MenuItem(name),
+    foreign key (item_name) references MenuItem(name)
+                        on update cascade on delete cascade ,
     foreign key (orderID) references Orders(orderid)
+                        on update cascade on delete cascade
 );
 
 #
