@@ -155,8 +155,12 @@ def get_customer(userID):
 
 # deletes a given user from Users
 @users.route('/u/delete', methods=['DELETE'])
-def delete_customer(userID):
+def delete_customer():
     cursor = db.get_db().cursor()
+
+    data = request.json 
+
+    userID = data["userID"]
 
     query = 'DELETE FROM Users WHERE Users.UserID = {}'.format(userID)
     cursor.execute(query)
@@ -174,10 +178,14 @@ def delete_customer(userID):
 
 # creates a new User given their personal information input 
 @users.route('/u/user', methods=['POST'])
-def create_new_user(phone, lang, fname, lname, total_orders, username, total_spent, pronouns, street, zipcode, city, state, country):
+def create_new_user():
     cursor = db.get_db().cursor()
 
-    query = 'INSERT INTO Users VALUES ({},{},{},{},{},{},{},{},{},{},{},{})'.format(phone, lang, fname, lname, total_orders, username,total_spent, 
+    data = request.json
+
+    phone, lang, fname, lname, username, pronouns, street, zipcode, city, state, country = data["phone"], data["lang"], data["fname"], data["lname"], data["username"], data["pronouns"], data["street"], data["zipcode"], data["city"], data["state"], data["country"]
+
+    query = 'INSERT INTO Users VALUES ({},{},{},{},{},{},{},{},{},{},{},{})'.format(phone, lang, fname, lname, 0, username, "0", 
                                                                                     pronouns, street, zipcode,city,state, country )
     cursor.execute(query)
 
