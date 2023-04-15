@@ -12,8 +12,7 @@ from src import db
 
 # GET top 10 highest spending customers
 # GET top 10 customers with most orders place
-# GET top 3 highest rated customers
-# GET top 3 lowest rated customers
+# PUT will update the pronouns 
 
 
 users = Blueprint('users', __name__)
@@ -103,3 +102,32 @@ def get_top_10_orders_placed():
     # the column headers. 
     for row in theData:
         json_data.append(dict(zip(column_headers, row)))
+
+    return jsonify(json_data)
+
+
+# PUT will update the pronouns 
+
+@users.route('/users/{pronouns}', method=['PUT'])
+def update_pronouns(new_pronouns):
+    query = '''
+        UPDATE USER SET pronouns = new_pronouns
+    '''
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+       # grab the column headers from the returned data
+    column_headers = [x[0] for x in cursor.description]
+
+    # create an empty dictionary object to use in 
+    # putting column headers together with data
+    json_data = []
+
+    # fetch all the data from the cursor
+    theData = cursor.fetchall()
+
+    # for each of the rows, zip the data elements together with
+    # the column headers. 
+    for row in theData:
+        json_data.append(dict(zip(column_headers, row)))
+
+    return jsonify(json_data)
