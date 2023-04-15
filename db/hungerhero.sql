@@ -50,6 +50,7 @@ CREATE TABLE Orders
 (
     orderid                varchar(50)   UNIQUE NOT NULL PRIMARY KEY,
     driver                 varchar(500) NOT NULL,
+    user                   varchar(20) NOT NULL,
     total_amount           text        NOT NULL,
     items_amount           int          NOT NULL,
     dropoff_instructions   text NOT NULL,
@@ -59,6 +60,9 @@ CREATE TABLE Orders
     time_placed            datetime     default current_timestamp,
     restaurant_name        varchar(50)  NOT NULL,
     CONSTRAINT fk_1 FOREIGN KEY (driver) REFERENCES Driver (employeeid)
+        on delete cascade
+        on update cascade,
+    foreign key (user) references Users(username)
         on delete cascade
         on update cascade
 );
