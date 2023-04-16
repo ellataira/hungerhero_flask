@@ -1,4 +1,4 @@
-from flask import Blueprint, request, jsonify, make_response
+from flask import Blueprint, request, jsonify, make_response, current_app
 import json
 from src import db
 
@@ -18,17 +18,43 @@ drivers = Blueprint('drivers', __name__)
 
 # Removes a driver from the database drivers
 @drivers.route('/fireDriver', methods=['DELETE'])
-def remove_driver(employee_id):
+def remove_driver():
     # get a cursor object from the database
     cursor = db.get_db().cursor()
+
+    data = request.json
+    employee_id = data["employee_id"]
+
 
     # this might not be right
     query = '''
         DELETE FROM Driver
-        WHERE employeeid = employee_id
-    '''
+        WHERE employeeid = '{}'
+    '''.format(employee_id)
 
     # use cursor to query the database for a list of products
+    cursor.execute(query)
+
+    return "Fired {}".format(employee_id)
+
+# Adds a driver to the database of drivers
+@drivers.route('/hireDriver', methods=['POST', 'GET'])
+def hire_driver():
+    # get a cursor object from the database
+    cursor = db.get_db().cursor()
+
+    data = request.json
+    current_app.logger.info(data)
+
+    employeeid, phone_number, radius, drivers_license, current_location, transportation = data["employeeid"], data["phone_number"], data["radius"], data["drivers_license"], data["current_location"], data["transportation"]
+
+    # use cursor to query the database for a list of products
+    query = """INSERT INTO Driver (employeeid, phone_number, radius, drivers_license, current_location, jobs_completed, transportation, total_earned, rating)
+                 VALUES ('{}','{}','{}','{}','{}','{}','{}','{}','{}')""".format(employeeid, phone_number, radius, drivers_license, current_location, 0, transportation, 0, 0)
+
+    cursor.execute(query)
+
+    query = "select * from Driver where employeeid = '{}'".format(employeeid) 
     cursor.execute(query)
 
     # grab the column headers from the returned data
@@ -48,51 +74,25 @@ def remove_driver(employee_id):
 
     return jsonify(json_data)
 
-# Adds a driver to the database of drivers
-@drivers.route('/hireDriver', methods=['POST'])
-def hire_driver(employeeid, phone_number, radius, drivers_license,
-current_location, transportation):
-    # get a cursor object from the database
-    cursor = db.get_db().cursor()
-
-    # use cursor to query the database for a list of products
-    cursor.execute("INSERT INTO Driver VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
-    (employeeid, phone_number, radius, drivers_license, 0, current_location, 0, transportation, 0))
-
-    # grab the column headers from the returned data
-    column_headers = [x[0] for x in cursor.description]
-
-    # create an empty dictionary object to use in 
-    # putting column headers together with data
-    json_data = []
-
-    # fetch all the data from the cursor
-    theData = cursor.fetchall()
-
-    # for each of the rows, zip the data elements together with
-    # the column headers. 
-    for row in theData:
-        json_data.append(dict(zip(column_headers, row)))
-
-    return jsonify(json_data)
-
 # Allows a driver to update their desired working radius
-@drivers.route('/updateRadius', methods=['PUT'])
+@drivers.route('/updateRadius', methods=['PUT', 'GET'])
 def update_radius():
     # get a cursor object from the database
     cursor = db.get_db().cursor()
     
     data = request.json
     
-    new_radius, employee_id = data["new_radius"], data["employee_id"]
+    new_radius, employeeid = data["new_radius"], data["employeeid"]
 
-    #maybe?
     query = '''
-        UPDATE Driver SET radius = new_radius
-        WHERE employeeid = employee_id
-    '''
+        UPDATE Driver SET radius = '{}'
+        WHERE employeeid = '{}'
+    '''.format(new_radius, employeeid)
 
     # use cursor to query the database for a list of products
+    cursor.execute(query)
+
+    query = "select * from Driver where employeeid = '{}'".format(employeeid) 
     cursor.execute(query)
 
     # grab the column headers from the returned data
@@ -114,10 +114,9 @@ def update_radius():
 
 # Allows a driver to update their current location
 @drivers.route('/updateLocation', methods=['PUT'])
-def update_location(new_location, employee_id):
+def update_location():
     # get a cursor object from the database
     cursor = db.get_db().cursor()
-    
         
     data = request.json
     
@@ -125,12 +124,15 @@ def update_location(new_location, employee_id):
 
     #maybe?
     query = '''
-        UPDATE Driver SET current_location = new_location
+        UPDATE Driver SET current_location = '{}'
 
-        WHERE employeeid = employee_id
-    '''
+        WHERE employeeid = '{}'
+    '''.format(new_location, employee_id)
 
     # use cursor to query the database for a list of products
+    cursor.execute(query)
+
+    query = "select * from Driver where employeeid = '{}'".format(employee_id) 
     cursor.execute(query)
 
     # grab the column headers from the returned data
@@ -150,31 +152,26 @@ def update_location(new_location, employee_id):
 
     return jsonify(json_data)
 
-# Adds a completed delivery to a driver and updates amount earned
-@drivers.route('/newOrderCompleted', methods=['PUT'])
-def new_order_completed(employee_id):
-    # get a cursor object from the database
+# updates a driver's phone number 
+@drivers.route('/phone', methods=['PUT'])
+def update_phone():
+# get a cursor object from the database
     cursor = db.get_db().cursor()
-    
         
     data = request.json
     
-    employee_id = data["employee_id"]
-
-    updated_earned = '''
-        SELECT SUM(total_amount)
-        FROM Orders
-        WHERE driver = employee_id
-    '''
+    newphone, employee_id = data["phone"], data["employee_id"]
 
     #maybe?
     query = '''
-        UPDATE Driver SET total_earned = updated_earned,
-        jobs_completed = jobs_completed + 1
-        WHERE employeeid = employee_id
-    '''
+        UPDATE Driver SET phone_number = '{}'
+        WHERE employeeid = '{}'
+    '''.format(newphone, employee_id)
 
     # use cursor to query the database for a list of products
+    cursor.execute(query)
+
+    query = "select * from Driver where employeeid = '{}'".format(employee_id) 
     cursor.execute(query)
 
     # grab the column headers from the returned data
@@ -193,14 +190,13 @@ def new_order_completed(employee_id):
         json_data.append(dict(zip(column_headers, row)))
 
     return jsonify(json_data)
-
 
 # Get top 20 worst rated drivers
 @drivers.route('/worstDrivers', methods=['GET'])
 def get_lowest():
     cursor = db.get_db().cursor()
     query = '''
-        SELECT employeeid
+        SELECT employeeid, rating
         FROM Driver
         ORDER BY rating
         LIMIT 20
@@ -228,7 +224,7 @@ def get_lowest():
 def get_highest_rated():
     cursor = db.get_db().cursor()
     query = '''
-        SELECT employeeid
+        SELECT employeeid, rating
         FROM Driver
         ORDER BY rating DESC
         LIMIT 10
@@ -256,7 +252,7 @@ def get_highest_rated():
 def get_most_earned():
     cursor = db.get_db().cursor()
     query = '''
-        SELECT employeeid
+        SELECT employeeid, total_earned
         FROM Driver
         ORDER BY total_earned DESC
         LIMIT 5
