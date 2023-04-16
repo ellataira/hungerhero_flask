@@ -1,4 +1,4 @@
-from flask import Blueprint, request, jsonify, make_response
+from flask import Blueprint, request, jsonify, make_response, current_app
 import json
 from src import db
 
@@ -45,7 +45,6 @@ def get_users():
 
 
 # Gets the top 10 highest spending customers 
-
 @users.route('/mostSpentCustomer', methods=['GET'])
 def get_top_10_spending_customer():
     query = '''
@@ -101,22 +100,32 @@ def get_top_10_orders_placed():
 
     return jsonify(json_data)
 
-
 # PUT will update the pronouns 
 
-@users.route('/users/pronouns', methods=['PUT'])
-def update_pronouns(new_pronouns):
-    query = '''
-        UPDATE USER SET pronouns = new_pronouns
-    '''
+@users.route('/pronouns', methods=['PUT'])
+def update_pronouns():
 
-    data = request.json
-
-    new_pronouns = data['Pronouns']
-    
+    # get a cursor object from the database
     cursor = db.get_db().cursor()
+        
+    data = request.json
+    
+    username, pronouns = data["username"], data["pronouns"]
+
+    #maybe?
+    query = '''
+        UPDATE Users SET pronouns = '{}'
+
+        WHERE username = '{}'
+    '''.format(pronouns, username)
+
+    # use cursor to query the database for a list of products
     cursor.execute(query)
-       # grab the column headers from the returned data
+
+    query = "select * from Users where username = '{}'".format(username) 
+    cursor.execute(query)
+
+    # grab the column headers from the returned data
     column_headers = [x[0] for x in cursor.description]
 
     # create an empty dictionary object to use in 
@@ -134,80 +143,103 @@ def update_pronouns(new_pronouns):
     return jsonify(json_data)
 
 
-
-
 # deletes a given user from Users
-@users.route('/u/delete', methods=['DELETE'])
-def delete_customer():
+@users.route('/delete', methods=['DELETE'])
+def delete_user():
+    # get a cursor object from the database
     cursor = db.get_db().cursor()
 
-    data = request.json 
+    data = request.json
+    username = data["username"]
 
-    userID = data["userID"]
 
-    query = 'DELETE FROM Users WHERE Users.UserID = {}'.format(userID)
+    # this might not be right
+    query = '''
+        DELETE FROM Users
+        WHERE username = '{}'
+    '''.format(username)
+
+    # use cursor to query the database for a list of products
     cursor.execute(query)
 
-    row_headers = [x[0] for x in cursor.description]
-    json_data = []
-    theData = cursor.fetchall()
-    for row in theData:
-        json_data.append(dict(zip(row_headers, row)))
-    the_response = make_response(jsonify(json_data))
-    the_response.status_code = 200
-    the_response.mimetype = 'application/json'
-    return the_response
+    return "Fired {}".format(username)
 
 
 # creates a new User given their personal information input 
-@users.route('/u/user', methods=['POST'])
+@users.route('/user', methods=['POST'])
 def create_new_user():
     cursor = db.get_db().cursor()
 
     data = request.json
+    current_app.logger.info(data)
 
     phone, lang, fname, lname, username, pronouns, street, zipcode, city, state, country = data["phone"], data["lang"], data["fname"], data["lname"], data["username"], data["pronouns"], data["street"], data["zipcode"], data["city"], data["state"], data["country"]
 
-    query = 'INSERT INTO Users VALUES ({},{},{},{},{},{},{},{},{},{},{},{})'.format(phone, lang, fname, lname, 0, username, "0", 
-                                                                                    pronouns, street, zipcode,city,state, country )
+    # query = "INSERT INTO Users VALUES ('{}','{}','{}','{}',{},'{}','{}','{}','{}','{}','{}','{}')".format(phone, lang, fname, lname, 0, username, 0, 
+    #                                                                                 pronouns, street, zipcode,city,state, country )
+    query = """INSERT INTO Users (phone, language, first_name, last_name, total_orders, username, total_spent, pronouns, address_street, address_zip, address_city, address_state, address_country) VALUES 
+    ('{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}')
+""".format(phone, lang, fname, lname, 0, username, 0, pronouns, street, zipcode, city, state, country)
+    
     cursor.execute(query)
 
-    row_headers = [x[0] for x in cursor.description]
+    query = "select * from Users where username = '{}'".format(username) 
+    cursor.execute(query)
+
+    # grab the column headers from the returned data
+    column_headers = [x[0] for x in cursor.description]
+
+    # create an empty dictionary object to use in 
+    # putting column headers together with data
     json_data = []
+
+    # fetch all the data from the cursor
     theData = cursor.fetchall()
+
+    # for each of the rows, zip the data elements together with
+    # the column headers. 
     for row in theData:
-        json_data.append(dict(zip(row_headers, row)))
-    the_response = make_response(jsonify(json_data))
-    the_response.status_code = 200
-    the_response.mimetype = 'application/json'
-    return the_response
+        json_data.append(dict(zip(column_headers, row)))
+
+    return jsonify(json_data)
 
 
 # updates a PaymentMethod's CVV and expiration date 
-@users.route('/u/payment', methods=['PUT'])
-def change_payment(cardno, oldcvv, oldexp, newcvv, newexp):
+@users.route('/payment', methods=['PUT'])
+def change_payment():
     cursor = db.get_db().cursor()
 
     data = request.json 
 
-    cardno, oldcvv, oldexp, newcvv, newexp  = data["cardno"], data["oldcvv"], data["oldexp"], data["newcvv"], data["newexp"]
+    cardno, oldcvv, oldexp, newcvv, newexp, username = data["cardno"], data["oldcvv"], data["oldexp"], data["newcvv"], data["newexp"], data["username"]
 
     query = '''update PaymentMethod 
-                set cvv = {}, expiration = {} 
-                where cvv = {} and expiration = {} and card_number = {};'''.format(newcvv, newexp, oldcvv, oldexp, cardno)
+                set cvv = '{}', expiration = '{}'
+                where cvv = '{}' and expiration = '{}'and card_number = '{}';'''.format(newcvv, newexp, oldcvv, oldexp, cardno)
 
+     # use cursor to query the database for a list of products
     cursor.execute(query)
 
-    row_headers = [x[0] for x in cursor.description]
-    json_data = []
-    theData = cursor.fetchall()
-    for row in theData:
-        json_data.append(dict(zip(row_headers, row)))
-    the_response = make_response(jsonify(json_data))
-    the_response.status_code = 200
-    the_response.mimetype = 'application/json'
-    return the_response
+    # a user may have multiple payment methods, but only return the one that is updated 
+    query = "select * from PaymentMethod where username = '{}' and card_number = '{}'".format(username, cardno) 
+    cursor.execute(query)
 
+    # grab the column headers from the returned data
+    column_headers = [x[0] for x in cursor.description]
+
+    # create an empty dictionary object to use in 
+    # putting column headers together with data
+    json_data = []
+
+    # fetch all the data from the cursor
+    theData = cursor.fetchall()
+
+    # for each of the rows, zip the data elements together with
+    # the column headers. 
+    for row in theData:
+        json_data.append(dict(zip(column_headers, row)))
+
+    return jsonify(json_data)
 
 # updates a User's address 
 @users.route('/address', methods=['PUT'])
@@ -220,18 +252,28 @@ def update_address():
 
     query = '''
     update Users
-    set address_street={}, address_zip={} , address_city={} , address_state={} , address_country={}
-    where username={}
+    set address_street='{}', address_zip='{}' , address_city='{}' , address_state='{}' , address_country='{}'
+    where username='{}'
     '''.format(street, zipcode, city, state, country, username)
 
     cursor.execute(query)
+    
+    query = "select * from Users where username = '{}' ".format(username) 
+    cursor.execute(query)
 
-    row_headers = [x[0] for x in cursor.description]
+    # grab the column headers from the returned data
+    column_headers = [x[0] for x in cursor.description]
+
+    # create an empty dictionary object to use in 
+    # putting column headers together with data
     json_data = []
+
+    # fetch all the data from the cursor
     theData = cursor.fetchall()
+
+    # for each of the rows, zip the data elements together with
+    # the column headers. 
     for row in theData:
-        json_data.append(dict(zip(row_headers, row)))
-    the_response = make_response(jsonify(json_data))
-    the_response.status_code = 200
-    the_response.mimetype = 'application/json'
-    return the_response
+        json_data.append(dict(zip(column_headers, row)))
+
+    return jsonify(json_data)

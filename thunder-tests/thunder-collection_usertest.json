@@ -1,0 +1,241 @@
+{
+    "client": "Thunder Client",
+    "collectionName": "usertest",
+    "dateExported": "2023-04-16T16:32:10.690Z",
+    "version": "1.1",
+    "folders": [],
+    "requests": [
+        {
+            "_id": "60c8966d-cba6-4b5c-a023-b48bc3954c12",
+            "colId": "27b2a3fc-ad7a-4c7f-80c0-643a93cc9d22",
+            "containerId": "",
+            "name": "updateaddress",
+            "url": "localhost:8001/u/address",
+            "method": "PUT",
+            "sortNum": 10000,
+            "created": "2023-04-15T17:26:48.597Z",
+            "modified": "2023-04-15T17:30:22.046Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"street\": \"1 Baker\", \n  \"zipcode\": \"1234\", \n  \"city\": \"Boston\", \n  \"state\": \"MA\", \n  \"country\": \"USA\",\n  \"username\": \"ablakesleyb\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "1751503b-8ec1-4856-ad16-5dab5faaa575",
+            "colId": "27b2a3fc-ad7a-4c7f-80c0-643a93cc9d22",
+            "containerId": "",
+            "name": "updateaddress2",
+            "url": "localhost:8001/u/address",
+            "method": "PUT",
+            "sortNum": 15000,
+            "created": "2023-04-16T16:28:57.345Z",
+            "modified": "2023-04-16T16:29:54.172Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"street\": \"9 Pennsylvania\", \n  \"zipcode\": \"9999\", \n  \"city\": \"New York\", \n  \"state\": \"DC\", \n  \"country\": \"USA\",\n  \"username\": \"acanete4\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "96596472-a912-4221-80aa-ce1c60d0fba4",
+            "colId": "27b2a3fc-ad7a-4c7f-80c0-643a93cc9d22",
+            "containerId": "",
+            "name": "getusers",
+            "url": "localhost:8001/u/users",
+            "method": "GET",
+            "sortNum": 20000,
+            "created": "2023-04-16T16:01:02.287Z",
+            "modified": "2023-04-16T16:06:29.396Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "abab8470-7b3e-4894-8e50-bd109a3725dd",
+            "colId": "27b2a3fc-ad7a-4c7f-80c0-643a93cc9d22",
+            "containerId": "",
+            "name": "pronouns",
+            "url": "localhost:8001/u/pronouns",
+            "method": "PUT",
+            "sortNum": 22500,
+            "created": "2023-04-16T16:03:40.489Z",
+            "modified": "2023-04-16T16:08:23.054Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"pronouns\": \"she/her\",\n  \"username\": \"ablakesleyb\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "4252d753-6017-4bad-8398-e468db520992",
+            "colId": "27b2a3fc-ad7a-4c7f-80c0-643a93cc9d22",
+            "containerId": "",
+            "name": "pronouns2",
+            "url": "localhost:8001/u/pronouns",
+            "method": "PUT",
+            "sortNum": 23750,
+            "created": "2023-04-16T16:08:41.755Z",
+            "modified": "2023-04-16T16:09:01.304Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"pronouns\": \"he/him\",\n  \"username\": \"acanete4\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "c70bda6c-3d7d-4857-9ec8-04b0562085b8",
+            "colId": "27b2a3fc-ad7a-4c7f-80c0-643a93cc9d22",
+            "containerId": "",
+            "name": "mostorders",
+            "url": "localhost:8001/u/mostOrdersPlaced",
+            "method": "GET",
+            "sortNum": 25000,
+            "created": "2023-04-16T16:03:09.652Z",
+            "modified": "2023-04-16T16:03:13.329Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "cb68e181-4cdf-4a07-afbe-b5d0e5294300",
+            "colId": "27b2a3fc-ad7a-4c7f-80c0-643a93cc9d22",
+            "containerId": "",
+            "name": "delete1",
+            "url": "localhost:8001/u/delete",
+            "method": "DELETE",
+            "sortNum": 27500,
+            "created": "2023-04-16T16:09:49.279Z",
+            "modified": "2023-04-16T16:10:15.217Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"username\":\"acanete4\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "d876a511-42eb-4bf3-91e1-38c2640f9fd5",
+            "colId": "27b2a3fc-ad7a-4c7f-80c0-643a93cc9d22",
+            "containerId": "",
+            "name": "delete2",
+            "url": "localhost:8001/u/delete",
+            "method": "DELETE",
+            "sortNum": 28750,
+            "created": "2023-04-16T16:12:13.861Z",
+            "modified": "2023-04-16T16:12:24.979Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"username\":\"acaroli1g\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "2fd764fd-d515-4cc1-90fb-14db2c390ef9",
+            "colId": "27b2a3fc-ad7a-4c7f-80c0-643a93cc9d22",
+            "containerId": "",
+            "name": "mostspendcust",
+            "url": "localhost:8001/u/mostSpentCustomer",
+            "method": "GET",
+            "sortNum": 30000,
+            "created": "2023-04-16T16:02:47.485Z",
+            "modified": "2023-04-16T16:02:56.853Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "ffe90461-178e-49c0-b78a-96e01ed06e1d",
+            "colId": "27b2a3fc-ad7a-4c7f-80c0-643a93cc9d22",
+            "containerId": "",
+            "name": "newuser1",
+            "url": "localhost:8001/u/user",
+            "method": "POST",
+            "sortNum": 30000,
+            "created": "2023-04-16T16:12:49.486Z",
+            "modified": "2023-04-16T16:20:43.512Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"phone\": \"708-638-8402\", \n  \"lang\": \"english\", \n  \"fname\": \"Ella\", \n  \"lname\": \"Taira\", \n  \"username\": \"ellataira3\", \n  \"pronouns\": \"she/her\", \n  \"street\": \"144 hemenway\", \n  \"zipcode\": \"1234\",\n  \"city\": \"Boston\",\n  \"state\": \"MA\", \n  \"country\": \"USA\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "2d0e5484-54cd-49a6-aa07-1fc7e3eb3d42",
+            "colId": "27b2a3fc-ad7a-4c7f-80c0-643a93cc9d22",
+            "containerId": "",
+            "name": "newuser2",
+            "url": "localhost:8001/u/user",
+            "method": "POST",
+            "sortNum": 40000,
+            "created": "2023-04-16T16:20:47.532Z",
+            "modified": "2023-04-16T16:21:26.014Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"phone\": \"799-999-9992\", \n  \"lang\": \"swedish\", \n  \"fname\": \"Olivia\", \n  \"lname\": \"Ericsson\", \n  \"username\": \"oliviae3\", \n  \"pronouns\": \"she/her\", \n  \"street\": \"10 Coventry\", \n  \"zipcode\": \"12234\",\n  \"city\": \"Boston\",\n  \"state\": \"MA\", \n  \"country\": \"USA\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "495f709d-f8e2-45e3-90ca-fad7c98da14f",
+            "colId": "27b2a3fc-ad7a-4c7f-80c0-643a93cc9d22",
+            "containerId": "",
+            "name": "payment1",
+            "url": "localhost:8001/u/payment",
+            "method": "PUT",
+            "sortNum": 50000,
+            "created": "2023-04-16T16:22:48.497Z",
+            "modified": "2023-04-16T16:24:31.064Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"newcvv\": \"123\", \n  \"newexp\": \"2023-12\", \n  \"oldcvv\": \"354\", \n  \"oldexp\": \"2022-07\", \n  \"cardno\": \"5967224785\",\n  \"username\": \"abown8\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "44204c43-db1b-4100-ae28-98b4ae5f4ddf",
+            "colId": "27b2a3fc-ad7a-4c7f-80c0-643a93cc9d22",
+            "containerId": "",
+            "name": "payment2",
+            "url": "localhost:8001/u/payment",
+            "method": "PUT",
+            "sortNum": 60000,
+            "created": "2023-04-16T16:24:38.062Z",
+            "modified": "2023-04-16T16:25:18.029Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"newcvv\": \"999\", \n  \"newexp\": \"2026-03\", \n  \"oldcvv\": \"853\", \n  \"oldexp\": \"2023-04\", \n  \"cardno\": \"5428409703\",\n  \"username\": \"atumielli28\"\n}",
+                "form": []
+            },
+            "tests": []
+        }
+    ]
+}
