@@ -25,7 +25,6 @@ def remove_driver():
     data = request.json
     employee_id = data["employee_id"]
 
-
     # this might not be right
     query = '''
         DELETE FROM Driver
@@ -34,6 +33,7 @@ def remove_driver():
 
     # use cursor to query the database for a list of products
     cursor.execute(query)
+    db.get_db().commit()
 
     return "Fired {}".format(employee_id)
 
@@ -56,6 +56,7 @@ def hire_driver():
 
     query = "select * from Driver where employeeid = '{}'".format(employeeid1) 
     cursor.execute(query)
+    db.get_db().commit()
 
     # grab the column headers from the returned data
     column_headers = [x[0] for x in cursor.description]
@@ -94,6 +95,7 @@ def update_radius():
 
     query = "select * from Driver where employeeid = '{}'".format(employeesid) 
     cursor.execute(query)
+    db.get_db().commit()
 
     # grab the column headers from the returned data
     column_headers = [x[0] for x in cursor.description]
@@ -134,6 +136,7 @@ def update_location():
 
     query = "select * from Driver where employeeid = '{}'".format(employeees_id) 
     cursor.execute(query)
+    db.get_db().commit()
 
     # grab the column headers from the returned data
     column_headers = [x[0] for x in cursor.description]
@@ -160,19 +163,20 @@ def update_phone():
         
     data = request.json
     
-    newphone, employese_id = data["phone"], data["employees_id"]
+    new_phone, employees_id = data["new_phone"], data["employees_id"]
 
     #maybe?
     query = '''
         UPDATE Driver SET phone_number = '{}'
         WHERE employeeid = '{}'
-    '''.format(newphone, employees_id)
+    '''.format(new_phone, employees_id)
 
     # use cursor to query the database for a list of products
     cursor.execute(query)
 
     query = "select * from Driver where employeeid = '{}'".format(employees_id) 
     cursor.execute(query)
+    db.get_db().commit()
 
     # grab the column headers from the returned data
     column_headers = [x[0] for x in cursor.description]
@@ -202,6 +206,7 @@ def get_lowest():
         LIMIT 20
     '''
     cursor.execute(query)
+    
        # grab the column headers from the returned data
     column_headers = [x[0] for x in cursor.description]
 
