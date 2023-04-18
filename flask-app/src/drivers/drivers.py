@@ -46,15 +46,15 @@ def hire_driver():
     data = request.json
     current_app.logger.info(data)
 
-    employeeid, phone_number, radius, drivers_license, current_location, transportation = data["employeeid"], data["phone_number"], data["radius"], data["drivers_license"], data["current_location"], data["transportation"]
+    employeeid1, phone_number1, radius1, drivers_license1, current_location1, transportation1 = data["employeeid1"], data["phone_number1"], data["radius1"], data["drivers_license1"], data["current_location1"], data["transportation1"]
 
     # use cursor to query the database for a list of products
     query = """INSERT INTO Driver (employeeid, phone_number, radius, drivers_license, current_location, jobs_completed, transportation, total_earned, rating)
-                 VALUES ('{}','{}','{}','{}','{}','{}','{}','{}','{}')""".format(employeeid, phone_number, radius, drivers_license, current_location, 0, transportation, 0, 0)
+                 VALUES ('{}','{}','{}','{}','{}','{}','{}','{}','{}')""".format(employeeid1, phone_number1, radius1, drivers_license1, current_location1, 0, transportation1, 0, 0)
 
     cursor.execute(query)
 
-    query = "select * from Driver where employeeid = '{}'".format(employeeid) 
+    query = "select * from Driver where employeeid = '{}'".format(employeeid1) 
     cursor.execute(query)
 
     # grab the column headers from the returned data
@@ -82,17 +82,17 @@ def update_radius():
     
     data = request.json
     
-    new_radius, employeeid = data["new_radius"], data["employeeid"]
+    new_radius, employeesid = data["new_radius"], data["employeesid"]
 
     query = '''
         UPDATE Driver SET radius = '{}'
         WHERE employeeid = '{}'
-    '''.format(new_radius, employeeid)
+    '''.format(new_radius, employeesid)
 
     # use cursor to query the database for a list of products
     cursor.execute(query)
 
-    query = "select * from Driver where employeeid = '{}'".format(employeeid) 
+    query = "select * from Driver where employeeid = '{}'".format(employeesid) 
     cursor.execute(query)
 
     # grab the column headers from the returned data
@@ -120,19 +120,19 @@ def update_location():
         
     data = request.json
     
-    new_location, employee_id = data["new_location"], data["employee_id"]
+    new_location, employeees_id = data["new_location"], data["employeees_id"]
 
     #maybe?
     query = '''
         UPDATE Driver SET current_location = '{}'
 
         WHERE employeeid = '{}'
-    '''.format(new_location, employee_id)
+    '''.format(new_location, employeees_id)
 
     # use cursor to query the database for a list of products
     cursor.execute(query)
 
-    query = "select * from Driver where employeeid = '{}'".format(employee_id) 
+    query = "select * from Driver where employeeid = '{}'".format(employeees_id) 
     cursor.execute(query)
 
     # grab the column headers from the returned data
@@ -160,18 +160,18 @@ def update_phone():
         
     data = request.json
     
-    newphone, employee_id = data["phone"], data["employee_id"]
+    newphone, employese_id = data["phone"], data["employees_id"]
 
     #maybe?
     query = '''
         UPDATE Driver SET phone_number = '{}'
         WHERE employeeid = '{}'
-    '''.format(newphone, employee_id)
+    '''.format(newphone, employees_id)
 
     # use cursor to query the database for a list of products
     cursor.execute(query)
 
-    query = "select * from Driver where employeeid = '{}'".format(employee_id) 
+    query = "select * from Driver where employeeid = '{}'".format(employees_id) 
     cursor.execute(query)
 
     # grab the column headers from the returned data
