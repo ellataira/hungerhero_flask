@@ -122,8 +122,10 @@ def update_pronouns():
     # use cursor to query the database for a list of products
     cursor.execute(query)
 
-    query = "select * from Users where username = '{}'".format(username) 
+    query = "select * from Users where username = '{}'".format(username1) 
     cursor.execute(query)
+    
+    db.get_db().commit()
 
     # grab the column headers from the returned data
     column_headers = [x[0] for x in cursor.description]
@@ -161,6 +163,8 @@ def delete_user():
 
     # use cursor to query the database for a list of products
     cursor.execute(query)
+    
+    db.get_db().commit()
 
     return "Fired {}".format(username2)
 
@@ -185,6 +189,8 @@ def create_new_user():
 
     query = "select * from Users where username = '{}'".format(username) 
     cursor.execute(query)
+    
+    db.get_db().commit()
 
     # grab the column headers from the returned data
     column_headers = [x[0] for x in cursor.description]
@@ -204,7 +210,6 @@ def create_new_user():
     return jsonify(json_data)
 
 
-# updates a PaymentMethod's CVV and expiration date 
 @users.route('/payment', methods=['PUT'])
 def change_payment():
     cursor = db.get_db().cursor()
@@ -223,6 +228,8 @@ def change_payment():
     # a user may have multiple payment methods, but only return the one that is updated 
     query = "select * from PaymentMethod where username = '{}' and card_number = '{}'".format(username3, cardno) 
     cursor.execute(query)
+    
+    db.get_db().commit()
 
     # grab the column headers from the returned data
     column_headers = [x[0] for x in cursor.description]
@@ -240,6 +247,7 @@ def change_payment():
         json_data.append(dict(zip(column_headers, row)))
 
     return jsonify(json_data)
+
 
 # updates a User's address 
 @users.route('/address', methods=['PUT'])
@@ -260,6 +268,7 @@ def update_address():
     
     query = "select * from Users where username = '{}' ".format(username4) 
     cursor.execute(query)
+    db.get_db().commit()
 
     # grab the column headers from the returned data
     column_headers = [x[0] for x in cursor.description]
