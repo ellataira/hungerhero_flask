@@ -1,20 +1,35 @@
-# MySQL + Flask Boilerplate Project
+HungerHero
+Contributors: Ella Taira, Ben Weiss, Sofie Cook, and Olivia Ericsson
 
-This repo contains a boilerplate setup for spinning up 3 Docker containers: 
-1. A MySQL 8 container for obvious reasons
-1. A Python Flask container to implement a REST API
-1. A Local AppSmith Server
+Link to Demo Video: *DONT FORGET THIS*
 
-## How to setup and start the containers
-**Important** - you need Docker Desktop installed
+The main goal of HungerHero is to bring together constumers and restaurants. Not everyone has the ability to get or prepare their own food, and restaraunts are always looking for new potential customers. Hiring and managing delivery drivers can be a logistical nightmare for restaurants, so we take care of the challenging parts. All that restaurants have to do is contact HungerHero, and we take care of the logistics. 
 
-1. Clone this repository.  
-1. Create a file named `db_root_password.txt` in the `secrets/` folder and put inside of it the root password for MySQL. 
-1. Create a file named `db_password.txt` in the `secrets/` folder and put inside of it the password you want to use for the a non-root user named webapp. 
-1. In a terminal or command prompt, navigate to the folder with the `docker-compose.yml` file.  
-1. Build the images with `docker compose build`
-1. Start the containers with `docker compose up`.  To run in detached mode, run `docker compose up -d`. 
+Our drivers can come from anywhere. They are not hired to work at particular restaurants, and they do not have any set hours or provided modes of transportation. They are free to make money however they want whenever they want. They can bike, drive, walk, or skateboard and make money while providing food for hungry customers.
 
+There are 3 dominant user personas for HungerHero: drivers, users, and restaurants. 
+
+Drivers are the backbone of HungerHero. No food deliveries would be possible without them. Here are some of the functionalities we have given drivers and other information that can be extracted from the database:
+
+- Screen to create an account with high customization (/hireDriver)
+- Ability remove their account (/fireDriver)
+- Adjust the radius in miles that they are willing to deliver in (/updateRadius)
+- Adjust their location/city (/updateLocation)
+- Update their phone number (/phone)
+- See the 20 lowest rated drivers (/worstDrivers)
+- See the 10 highest rated drivers (/highestRated)
+- See the 5 drivers who have earned the most with HungerHero (/mostEarned)
+
+The second blueprint that we implemented was for users. Here are some features that are available to users as well as information that can be retrieved from our HungerHero database about them:
+
+- See a complete list of all HungerHero customers (/users)
+- See the 10 customers who have spent the most money on HungerHero (/mostSpentCustomer)
+- See the 10 customers who have placed the most HungerHero orders (mostOrdersPlaced)
+- Allows a user to update their account pronouns (/pronouns)
+- Remove a user's account (/delete)
+- Creates a new account with personalized information (/user)
+- Allows a user to update information about their method of payment (/payment)
+- Allows a user to update their address information for deliveries (/address)
 
 
 
