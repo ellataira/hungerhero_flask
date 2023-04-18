@@ -7,7 +7,7 @@ The main goal of HungerHero is to bring together constumers and restaurants. Not
 
 Our drivers can come from anywhere. They are not hired to work at particular restaurants, and they do not have any set hours or provided modes of transportation. They are free to make money however they want whenever they want. They can bike, drive, walk, or skateboard and make money while providing food for hungry customers.
 
-There are 3 dominant user personas for HungerHero: drivers, users, and restaurants. 
+There are 3 dominant user personas for HungerHero: drivers, users, and restaurants. For this project, we will be focusing on 2 of our user persons which are: drivers and users. 
 
 Drivers are the backbone of HungerHero. No food deliveries would be possible without them. Here are some of the functionalities we have given drivers and other information that can be extracted from the database:
 
@@ -20,7 +20,7 @@ Drivers are the backbone of HungerHero. No food deliveries would be possible wit
 - See the 10 highest rated drivers (/highestRated)
 - See the 5 drivers who have earned the most with HungerHero (/mostEarned)
 
-The second blueprint that we implemented was for users. Here are some features that are available to users as well as information that can be retrieved from our HungerHero database about them:
+The second blueprint that we implemented was the users. Here are some features that are available to users as well as information that can be retrieved from our HungerHero database about them:
 
 - See a complete list of all HungerHero customers (/users)
 - See the 10 customers who have spent the most money on HungerHero (/mostSpentCustomer)
