@@ -110,20 +110,22 @@ def update_pronouns():
         
     data = request.json
     
-    username, pronouns = data["username"], data["pronouns"]
+    username1, pronouns1 = data["username1"], data["pronouns1"]
 
     #maybe?
     query = '''
         UPDATE Users SET pronouns = '{}'
 
         WHERE username = '{}'
-    '''.format(pronouns, username)
+    '''.format(pronouns1, username1)
 
     # use cursor to query the database for a list of products
     cursor.execute(query)
 
-    query = "select * from Users where username = '{}'".format(username) 
+    query = "select * from Users where username = '{}'".format(username1) 
     cursor.execute(query)
+    
+    db.get_db().commit()
 
     # grab the column headers from the returned data
     column_headers = [x[0] for x in cursor.description]
@@ -150,19 +152,21 @@ def delete_user():
     cursor = db.get_db().cursor()
 
     data = request.json
-    username = data["username"]
+    username2 = data["username2"]
 
 
     # this might not be right
     query = '''
         DELETE FROM Users
         WHERE username = '{}'
-    '''.format(username)
+    '''.format(username2)
 
     # use cursor to query the database for a list of products
     cursor.execute(query)
+    
+    db.get_db().commit()
 
-    return "Fired {}".format(username)
+    return "Fired {}".format(username2)
 
 
 # creates a new User given their personal information input 
@@ -185,6 +189,8 @@ def create_new_user():
 
     query = "select * from Users where username = '{}'".format(username) 
     cursor.execute(query)
+    
+    db.get_db().commit()
 
     # grab the column headers from the returned data
     column_headers = [x[0] for x in cursor.description]
@@ -204,14 +210,13 @@ def create_new_user():
     return jsonify(json_data)
 
 
-# updates a PaymentMethod's CVV and expiration date 
 @users.route('/payment', methods=['PUT'])
 def change_payment():
     cursor = db.get_db().cursor()
 
     data = request.json 
 
-    cardno, oldcvv, oldexp, newcvv, newexp, username = data["cardno"], data["oldcvv"], data["oldexp"], data["newcvv"], data["newexp"], data["username"]
+    cardno, oldcvv, oldexp, newcvv, newexp, username3 = data["cardno"], data["oldcvv"], data["oldexp"], data["newcvv"], data["newexp"], data["username3"]
 
     query = '''update PaymentMethod 
                 set cvv = '{}', expiration = '{}'
@@ -221,8 +226,10 @@ def change_payment():
     cursor.execute(query)
 
     # a user may have multiple payment methods, but only return the one that is updated 
-    query = "select * from PaymentMethod where username = '{}' and card_number = '{}'".format(username, cardno) 
+    query = "select * from PaymentMethod where username = '{}' and card_number = '{}'".format(username3, cardno) 
     cursor.execute(query)
+    
+    db.get_db().commit()
 
     # grab the column headers from the returned data
     column_headers = [x[0] for x in cursor.description]
@@ -241,6 +248,7 @@ def change_payment():
 
     return jsonify(json_data)
 
+
 # updates a User's address 
 @users.route('/address', methods=['PUT'])
 def update_address():
@@ -248,18 +256,19 @@ def update_address():
 
     data = request.json 
 
-    street, zipcode, city, state, country, username = data["street"], data["zipcode"], data["city"], data["state"], data["country"], data["username"]
+    street1, zipcode1, city1, state1, country1, username4 = data["street1"], data["zipcode1"], data["city1"], data["state1"], data["country1"], data["username4"]
 
     query = '''
     update Users
     set address_street='{}', address_zip='{}' , address_city='{}' , address_state='{}' , address_country='{}'
     where username='{}'
-    '''.format(street, zipcode, city, state, country, username)
+    '''.format(street1, zipcode1, city1, state1, country1, username4)
 
     cursor.execute(query)
     
-    query = "select * from Users where username = '{}' ".format(username) 
+    query = "select * from Users where username = '{}' ".format(username4) 
     cursor.execute(query)
+    db.get_db().commit()
 
     # grab the column headers from the returned data
     column_headers = [x[0] for x in cursor.description]
