@@ -3,7 +3,7 @@ Contributors: Ella Taira, Ben Weiss, Sofie Cook, and Olivia Ericsson
 
 Link to Demo Video: *DONT FORGET THIS*
 
-The main goal of our HungerHero Application is to enable for an easier transaction between drivers, customers and restaurants. Not everyone has the ability to get or prepare their own food, and restaraunts are always looking for new potential customers. Hiring and managing delivery drivers can be a logistical nightmare for restaurants, so we take care of the challenging parts. All that restaurants have to do is contact HungerHero, and we take care of the logistics. 
+The main goal of our HungerHero Application is to enable for an easier transaction between drivers, customers and restaurants. Not everyone has the ability to get or prepare their own food, and restaurants are always looking for new potential customers. Hiring and managing delivery drivers can be a logistical nightmare for restaurants, so we take care of the challenging parts. All that restaurants have to do is contact HungerHero, and we take care of the logistics. 
 
 Our drivers can come from anywhere. They are not hired to work at particular restaurants, and they do not have any set hours or provided modes of transportation. They are free to make money however they want whenever they want. They can bike, drive, walk, or skateboard and make money while providing food for hungry customers.
 
