@@ -1,7 +1,7 @@
 # HungerHero
 Contributors: Ella Taira, Ben Weiss, Sofie Cook, and Olivia Ericsson
 
-[Demo Video](https://drive.google.com/file/d/1ruFDvw3b5MFbsZDkhEDRXS809ELLihtR/view?usp=share_link)
+[Demo Video](https://youtu.be/0TUpfzIq0J8)
 
 [AppSmith Repo](https://github.com/ellataira/hungerhero_appsmith)
 
