@@ -1,4 +1,4 @@
-HungerHero
+# HungerHero
 Contributors: Ella Taira, Ben Weiss, Sofie Cook, and Olivia Ericsson
 
 Link to Demo Video: https://drive.google.com/file/d/1ruFDvw3b5MFbsZDkhEDRXS809ELLihtR/view?usp=share_link 
